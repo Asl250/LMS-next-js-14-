@@ -20,14 +20,10 @@ const workSans = Work_Sans({
   variable: "--font-workSans",
 })
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-    <body className={`${creteRound.variable} ${workSans.variable} overflow-x-hidden`}>{children}
+    <body className={`${creteRound.variable} ${workSans.variable} overflow-x-hidden`}>
     <ThemeProvider
       attribute='class'
       defaultTheme='system'

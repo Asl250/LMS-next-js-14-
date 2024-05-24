@@ -1,39 +1,108 @@
 'use client'
+
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Sheet, SheetContent,  SheetTrigger } from '@/components/ui/sheet'
+import { general, pages } from '@/constants'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 import Link from "next/link";
-import {navLinks} from "@/constants";
 import ModeToggle from "@/components/shared/mode-toggle";
-import {usePathname} from "next/navigation";
-import {cn} from "@/lib/utils";
-import Mobile from "@/app/(root)/_components/mobile";
+import { CgLogIn } from 'react-icons/cg'
+import { HiOutlineMenuAlt1 } from 'react-icons/hi'
+import { IoLanguage } from 'react-icons/io5'
+import { MdOutlineLiveHelp } from 'react-icons/md'
 
 function Navbar() {
-	const pathName = usePathname()
+	const router = usePathname()
+	
 	return (
-		<div className={"h-[10vh] backdrop-blur-sm border-b fixed z-40 inset-0 bg-background"}>
-			<div className={" container max-w-6xl mx-auto h-[10vh] w-full flex items-center justify-between"}>
+		<div className={"w-full px-[10px] border-b fixed border-blue-400 h-[10vh] backdrop-blur-sm z-40 inset-0 bg-background left-0"}>
+			<div className={"container max-w-6xl mx-auto h-[10vh] w-full flex items-center justify-between"}>
 				{/*Logo*/}
-				<Link href={"/"}>
-					<h1 className={"text-4xl font-creteRound"}>LOGO</h1>
-				</Link>
-				{/*	Nav links*/}
-				<div className={'gap-2 hidden md:flex'}>
-					{navLinks.map(nav => (
-						<Link
-							href={nav.route}
-							key={nav.route}
-							className={cn("hover:bg-orange-400/20 py-1 px-3 cursor-pointer rounded-sm transition-colors",
-								pathName === nav.route && 'text-orange-400'
-							)}
-						>
-							{nav.name}
-						</Link>
-					))}
+				<div className={"flex"}>
+					<HiOutlineMenuAlt1 className={"w-[30px] h-[30px] mt-1 mr-1 cursor-pointer hidden lg:block"}/>
+					
+					
+					<Sheet>
+						<SheetTrigger>
+							<HiOutlineMenuAlt1 className={"w-[30px] h-[30px] mt-1 mr-1 cursor-pointer hidden max-lg:block"}/>
+						</SheetTrigger>
+						<SheetContent side={'left'} className={'w-full'}>
+							<div
+								className={'p-0 max-lg:overflow-y-scroll overflow-x-hidden w-full h-full'}>
+								<div className={'w-full p-5'}>
+									<p className={'p-0 m-0 text-lg'}>General</p>
+									{general.map((item, idx) => {
+										const active = router == item.route
+										return (
+											<Link href={`/${item.route}`} key={idx} className={'m-5'}>
+												<Button className={'w-[90%] my-1 py-[27px] border-blue-400 text-lg'}
+												        variant={active ? 'default' : 'outline'}>
+													{item.label}
+												</Button>
+											</Link>
+										)
+									})}
+									<p className={'m-5 text-lg'}>Pages</p>
+									{pages.map((item, idx) => {
+										const active = router == item.route
+										return (
+											<Link href={`/${item.route}`} key={idx} className={'m-5'}>
+												<Button className={'w-[90%] my-1 py-[27px] border-blue-400 text-lg'}
+												        variant={active ? 'default' : 'outline'}>
+													{item.label}
+												</Button>
+											</Link>
+										)
+									})}
+								</div>
+							</div>
+						</SheetContent>
+					</Sheet>
+					
+					
+					<Link href={'/'}>
+						<h1 className={'text-4xl font-creteRound'}>LOGO</h1>
+					</Link>
 				</div>
-				{/*	Search*/}
-				<div className={"gap-1 flex items-center"}>
-					<ModeToggle/>
-					<Mobile/>
+				
+				<div className={'gap-1 flex items-center'}>
+					<ModeToggle />
+					<Button variant={'ghost'}>
+						<MdOutlineLiveHelp className={'cursor-pointer w-[25px] h-[25px]'} />
+					</Button>
+					
+					<DropdownMenu>
+						<DropdownMenuTrigger>
+							<IoLanguage className={'mx-1 cursor-pointer w-[25px] h-[25px]'} />
+						</DropdownMenuTrigger>
+						<DropdownMenuContent>
+							
+							<DropdownMenuItem>
+								<Image src={'https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg'} alt={'uzb'}
+								       width={'30'} height={'30'} />
+								<p className={'pl-3 text-lg'}>Uzb</p>
+							</DropdownMenuItem>
+							
+							<DropdownMenuItem>
+								<Image src={'https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg'} alt={'rus'}
+								       width={'30'} height={'30'} />
+								<p className={'pl-3 text-lg'}>Rus</p>
+							</DropdownMenuItem>
+								<DropdownMenuItem>
+									<Image src={'https://upload.wikimedia.org/wikipedia/commons/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg'} alt={"eng"} width={"30"} height={"30"}/>
+									<p className={'pl-3 text-lg'}>Eng</p>
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					
+					
+					<Button variant={"ghost"}>
+						<CgLogIn className={"cursor-pointer w-[25px] h-[25px]"} />
+					</Button>
+				
 				</div>
 			</div>
 		</div>
